@@ -3,9 +3,17 @@ module IndexTree
     def acts_as_tree_node(options={}, &block)
       if options[:root]
         include IndexTree::RootElement
-        # yield if block_given?
       else
         include IndexTree::NodeElement
+      end
+
+      # Find what associations were defined in the given block
+      # And set the child nodes
+      if block_given?
+        current_associations = reflections.keys
+        yield
+        associations_in_block = reflections.keys - current_associations
+        child_nodes *associations_in_block
       end
     end
   end
