@@ -1,3 +1,8 @@
+# Adds a preload_tree method to the model
+# Usage example:
+#
+#     Model.find(1).preload_tree
+#
 module IndexTree
   module FinderMethods
     extend ActiveSupport::Concern
@@ -11,6 +16,13 @@ module IndexTree
   end
 end
 
+
+# Add a preload_tree method to the ActiveRecord_Relation
+# Usage example:
+#
+#     Model.where(level: 2).all.preload_tree
+#     Model.all.preload_tree
+#
 module ActiveRecord
   class Relation
     def preload_tree

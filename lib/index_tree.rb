@@ -8,6 +8,9 @@ require 'index_tree/root_element'
 require 'models/index_node'
 require 'index_tree/tree_preloader'
 
+require 'index_tree/acts_as_tree_node'
+require 'index_tree/railtie'
+
 module IndexTree
   def self.table_name_prefix
     'index_tree_'

@@ -1,7 +1,7 @@
 require 'active_support/concern'
 
 # Defines the root element of the tree, it invokes the recursive index nodes creation.
-
+# And Hold the structure of the tree
 module IndexTree
   module RootElement
     extend ActiveSupport::Concern
@@ -24,10 +24,15 @@ module IndexTree
         create_index_nodes_for_children(self)
       end
 
+      # @return [tree_structure] Each Root Element hold the structure of the tree
       def self.tree_structure
         @@tree_structure ||= create_tree_structure({}, self)
       end
 
+      # Recursive function that create the structure of the tree
+      # Iterates each tree node relation and creates a loading instruction
+      # @param [loaded_associations] Previous associations
+      # @param [class_to_load] Current class association
       def self.create_tree_structure(loaded_associations, class_to_load)
         class_to_load.child_nodes.each do |association_name, association|
           get_all_child_classes(association).each do |child_class|
@@ -51,6 +56,18 @@ module IndexTree
         return loaded_associations
       end
 
+      # Return all the classes for current association
+      # @param [association]
+      def self.get_all_child_classes(association)
+        if (association.polymorphic?)
+          return find_all_polymorphic_classes(association.name)
+        else
+          return Array(association.klass)
+        end
+      end
+
+      # Find all the classes from the polymorphic type
+      # @param [polymorphic_class] type to find
       def self.find_all_polymorphic_classes(polymorphic_class)
         ret = []
         ObjectSpace.each_object(Class).select { |klass| klass < ActiveRecord::Base }.each do |i|
@@ -59,14 +76,6 @@ module IndexTree
           end
         end
         ret.flatten
-      end
-
-      def self.get_all_child_classes(association)
-        if (association.polymorphic?)
-          return find_all_polymorphic_classes(association.name)
-        else
-          return Array(association.klass)
-        end
       end
     end
   end
