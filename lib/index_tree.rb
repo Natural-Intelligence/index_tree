@@ -1,10 +1,12 @@
 require "index_tree/version"
 require "index_tree/engine"
-require 'index_tree/tree_preloader'
 
-require 'models/concerns/finder_methods'
-require 'models/concerns/node_element'
-require 'models/concerns/root_element'
+
+require 'index_tree/finder_methods'
+require 'index_tree/node_element'
+require 'index_tree/root_element'
+require 'models/index_node'
+require 'index_tree/tree_preloader'
 
 module IndexTree
   def self.table_name_prefix
