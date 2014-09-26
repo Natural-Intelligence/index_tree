@@ -13,8 +13,6 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'http://www.naturalint.com'
 
   spec.files         = `git ls-files`.split($/)
-#  spec.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
-#  spec.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = %w(lib app)
 
   spec.add_dependency "bundler"

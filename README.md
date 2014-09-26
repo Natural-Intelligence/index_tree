@@ -1,21 +1,14 @@
 # IndexTree
 
-This Gem eager loads trees by indexing the nodes of the tree.
+This Gem eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N+1, 
+when N is number of different models(ActiveRecords) in the tree.
+
 Each inner object in the tree have an index node instance that is connecting it to the root.
-It is used in eager load of Root element, for fetching only the objects that are in the tree of a specific root(Pruning).
-Each of the nodes in the tree should have one of the following declarations:
-
-    include IndexTree::RootElement - for root element
-    include IndexTree::NodeElement - for node elements
-
-And declare what associations are used to define the relations of the tree.
-Usage:
-
-     child_nodes :name_of_exisiting_association
+When the root of the tree is loaded, only the objects that are in the tree are fetched(Pruning).
 
 Example:
 
-    class calculation
+    class continents
       include IndexTree::RootElement
 
        has_many :logical_expressions
@@ -32,10 +25,6 @@ Example:
                        
                        
 
-Each continent have an instance of a Index node that connects it to the world, it is defined by the following line:
-
-    child_nodes :continents
-
 The index nodes are created when the root element is saved.
 
 ## Installation
@@ -49,17 +38,34 @@ gem 'index-tree'
 And then execute:
 
     $ bundle
-    $ rake index_tree_engine:install:migrations
+    $ rake db:migrate (Migration which creates index_tree_index_node table)
 
-## Usage
+## Declaration
 
-Support Associations:
-    belongs_to
-    belongs_to :class, polymorphic: true
-    has_one
-    has_many
+All the models should be load in the application, before using the preload_tree.
+
+    class RootNode < ActiveRecord::Base
+       acts_as_tree_node :root => true do
+         has_many :child_nodes, dependent: :destroy
+       end
+    end
     
-All the model should be load in the application, before using the preload_tree
+The following associations are supported:
+ 
+     belongs_to
+     belongs_to :class, polymorphic: true
+     has_one
+     has_many
+
+The following types of inheritance are supported:
+    STI
+    Polymorphic associations
+    
+## Options
+
+    :root   Used to declare a root model(default is false)
+        
+## Usage
 
     RootModel.find(1).preload_tree
     RootModel.all.preload_tree

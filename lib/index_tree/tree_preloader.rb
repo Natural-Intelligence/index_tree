@@ -1,5 +1,31 @@
 module IndexTree
   module TreePreloader
+    def self.preload_entities(root_entities)
+
+      root_entities_array = Array(root_entities)
+      root_entity_class = root_entities_array.first.class
+
+      cache = {root_entity_class =>
+                   Hash[root_entities_array.map { |t| [t.id, t] }]}
+
+      tree_structure = root_entity_class.tree_structure
+
+      tree_structure.each do |source_class, target_classes|
+        target_classes.each do |target_class, load_instruction|
+          preload_class(cache, root_entity_class, source_class)
+          preload_class(cache, root_entity_class, target_class)
+
+          if load_instruction[:opposite]
+            associate_entities_opposite(cache, source_class, load_instruction[:association_name], target_class, load_instruction[:many])
+          else
+            associate_entities(cache, source_class, load_instruction[:association_name], target_class, load_instruction[:polymorphic])
+          end
+        end
+      end
+
+      return root_entities
+    end
+
     def self.preload_class(cache, root_entity_class, class_to_load)
       unless cache.has_key?(class_to_load)
         cache[class_to_load] = Hash[class_to_load.joins(:index_tree_index_node).where(:index_tree_index_nodes => {:root_element_type => cache[root_entity_class].values.first.class,
@@ -38,30 +64,5 @@ module IndexTree
       end
     end
 
-    def self.preload_entities(root_entities)
-
-      root_entities_array = Array(root_entities)
-      root_entity_class = root_entities_array.first.class
-
-      cache = {root_entity_class =>
-                   Hash[root_entities_array.map { |t| [t.id, t] }]}
-
-      tree_structure = root_entity_class.tree_structure
-
-      tree_structure.each do |source_class, target_classes|
-        target_classes.each do |target_class, load_instruction|
-          preload_class(cache, root_entity_class, source_class)
-          preload_class(cache, root_entity_class, target_class)
-
-          if load_instruction[:opposite]
-            associate_entities_opposite(cache, source_class, load_instruction[:association_name], target_class, load_instruction[:many])
-          else
-            associate_entities(cache, source_class, load_instruction[:association_name], target_class, load_instruction[:polymorphic])
-          end
-        end
-      end
-
-      return root_entities
-    end
   end
 end

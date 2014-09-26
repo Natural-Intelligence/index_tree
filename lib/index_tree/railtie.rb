@@ -1,3 +1,4 @@
+# Defines the ActsAssTreeNode Method
 module IndexTree
   class Railtie < Rails::Railtie
     ActiveSupport.on_load(:active_record) do
