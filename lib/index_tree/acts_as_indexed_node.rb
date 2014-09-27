@@ -1,6 +1,6 @@
 module IndexTree
-  module ActsAsTreeNode
-    def acts_as_tree_node(options={}, &block)
+  module ActsAsIndexedNode
+    def acts_as_indexed_node(options={}, &block)
       if options[:root]
         include IndexTree::RootElement
       else

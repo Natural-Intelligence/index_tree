@@ -2,7 +2,7 @@
 module IndexTree
   class Railtie < Rails::Railtie
     ActiveSupport.on_load(:active_record) do
-      extend IndexTree::ActsAsTreeNode
+      extend IndexTree::ActsAsIndexedNode
     end
   end
 end
