@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = %w(info@naturalint.com)
   spec.homepage      = 'http://www.naturalint.com'
 
-  spec.description   = %q{eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N,
+  spec.description   = %q{Eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N,
 when N is number of different models(ActiveRecords) in the tree}
 
   spec.summary       = %q{This Gem eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N,

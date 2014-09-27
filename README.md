@@ -56,23 +56,27 @@ The following query fetches only the objects in the Equation1 tree in two querie
       
     Equation.find(1).preload_tree
     
+One query to fetch Equations, and the second query is to fetch Expressions(Doesn't matter how deep is the tree it is still one query)
+    
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'index-tree'
+gem 'index_tree'
 ```
 
 And then execute:
 
     $ bundle
-    $ rake db:migrate (Migration which creates index_tree_index_node table)
+    $ rake db:migrate 
+    
+There is a migration which creates index_tree_index_node table
 
 ## Declaration
 
-All the models should be load in the application, before using the preload_tree.
+All the models should be loaded in the Rails application, before using the preload_tree.
 
     class RootNode < ActiveRecord::Base
        acts_as_indexed_node :root => true do
