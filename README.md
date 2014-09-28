@@ -1,7 +1,7 @@
 # IndexTree
 
 This Gem eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N, 
-when N is number of different models(ActiveRecords) in the tree.
+when N is the number of different models(ActiveRecords) in the tree.
 
 Each inner object in the tree have an index node instance that is connecting it to the root.
 When the root of the tree is loaded, only the objects that are in the tree are fetched(Pruning).
