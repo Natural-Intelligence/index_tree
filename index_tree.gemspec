@@ -6,7 +6,7 @@ require 'index_tree/version'
 Gem::Specification.new do |spec|
   spec.name          = "index_tree"
   spec.version       = IndexTree::VERSION
-  spec.authors       = ["Natural Intelligence"]
+  spec.authors       = ["Alex Stanovsky"]
   spec.email         = %w(info@naturalint.com)
   spec.homepage      = 'http://www.naturalint.com'
 
