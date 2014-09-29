@@ -41,7 +41,7 @@ module IndexTree
         return valid_associations
       end
 
-      # Invoke index node creation for children node
+      # Invoke index node creation for children nodes
       # @param [root_element] id of the root element
       def create_index_nodes_for_children(root_element)
 
