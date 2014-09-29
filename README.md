@@ -5,11 +5,11 @@ when N is the number of different models(ActiveRecords) in the tree.
 
 Each inner object in the tree have an index node instance that is connecting it to the root.
 When the root of the tree is loaded, only the objects that are in the tree are fetched(Pruning).
-The index nodes are created when the root element is saved.
+The index nodes are created when the root element is saved and stores in the IndexNode model.
 
 Example:
 
-    class Equation
+    class Equation < ActiveRecord::Bas
         acts_as_indexed_node :root => true do
             has_many :expressions
         end
@@ -18,7 +18,7 @@ Example:
     end
     
     
-    class Expression
+    class Expression < ActiveRecord::Bas
         acts_as_indexed_node do
             has_many :expressions
         end
