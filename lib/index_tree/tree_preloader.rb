@@ -31,7 +31,7 @@ module IndexTree
         cache[class_to_load] = Hash[class_to_load.joins(:index_tree_index_node)
                                                   .where(:index_tree_index_nodes => {:root_element_type => root_entity_class,
                                                                                     :root_element_id => cache[root_entity_class].keys})
-                                                  .all.map { |t| [t.id, t] }]
+                                                  .all.map { |entity| [entity.id, entity] }]
       end
     end
 
