@@ -44,7 +44,7 @@ Example:
                     |Expression3|           |Expression4|                |Expression7|           |Expression8|
                     +-----------+           +-----------+                +-----------+           +-----------+
     
-The following query fetches only the objects in the Equation1 tree in two queries:    
+The following statement fetches only the objects in the Equation1 tree in two queries:    
       
     Equation.find(1).preload_tree
     
