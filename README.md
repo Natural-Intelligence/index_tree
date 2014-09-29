@@ -64,7 +64,7 @@ And then execute:
     $ bundle
     $ rake db:migrate 
     
-There is a migration which creates index_tree_index_node table
+There is a migration which creates index_tree_index_node table(IndexNode model)
 
 ## Declaration
 
