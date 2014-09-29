@@ -1,7 +1,7 @@
 require 'active_support/concern'
 
 # Defines the root element of the tree, it invokes the recursive index nodes creation.
-# And Hold the structure of the tree
+# And Holds the structure of the tree
 module IndexTree
   module RootElement
     extend ActiveSupport::Concern
