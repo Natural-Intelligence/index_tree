@@ -22,8 +22,8 @@ The index nodes are created when the root element is saved.}
   spec.files         = `git ls-files`.split($/)
   spec.require_paths = %w(lib app)
 
-  s.add_dependency "activerecord", ">= 3.0.0"
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rdoc"
-  s.add_development_dependency "minitest", "~> 4.7.5"
+  spec.add_dependency "activerecord", ">= 3.0.0"
+  spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "rdoc"
+  spec.add_development_dependency "minitest", "~> 4.7.5"
 end
