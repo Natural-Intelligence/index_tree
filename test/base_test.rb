@@ -4,6 +4,14 @@ require 'active_record'
 require 'rails'
 require 'index_tree'
 
+require 'simplecov'
+require 'coveralls'
+SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+SimpleCov.start do
+  add_filter '/test/'
+  add_filter '/vendor/'
+end
+
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
 
 class MiniTest::Unit::TestCase
