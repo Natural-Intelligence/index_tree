@@ -26,7 +26,8 @@ module IndexTree
 
       # @return [tree_structure] Each Root Element hold the structure of the tree
       def self.tree_structure
-        @@tree_structure ||= create_tree_structure({}, self)
+        @@tree_structure ||= {}
+        @@tree_structure[self] ||= create_tree_structure({}, self)
       end
 
       # Recursive function that create the structure of the tree

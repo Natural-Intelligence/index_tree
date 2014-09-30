@@ -1,14 +1,13 @@
 # Rails Engine copies the migration to the Rails app
-module IndexTree
-  class Engine < Rails::Engine
-    isolate_namespace IndexTree
+class IndexTree::Engine < Rails::Engine
+  isolate_namespace IndexTree
 
-    initializer :append_migrations do |app|
-      unless app.root.to_s.match root.to_s
-        config.paths["db/migrate"].expanded.each do |expanded_path|
-          app.config.paths["db/migrate"] << expanded_path
-        end
+  initializer :append_migrations do |app|
+    unless app.root.to_s.match root.to_s
+      config.paths["db/migrate"].expanded.each do |expanded_path|
+        app.config.paths["db/migrate"] << expanded_path
       end
     end
   end
 end
+

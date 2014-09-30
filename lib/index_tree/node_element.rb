@@ -44,7 +44,6 @@ module IndexTree
       # Invoke index node creation for children nodes
       # @param [root_element] id of the root element
       def create_index_nodes_for_children(root_element)
-
         self.child_nodes.keys.each do |association_name|
           association_value = send(association_name)
 
