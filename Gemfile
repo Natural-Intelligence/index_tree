@@ -4,5 +4,5 @@ gemspec
 
 group :test do
   gem 'rails'
-  gem 'coveralls'
+  gem 'coveralls', require: false
 end

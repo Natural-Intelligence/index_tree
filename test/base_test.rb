@@ -9,7 +9,7 @@ require 'coveralls'
 SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 SimpleCov.start do
   add_filter '/test/'
-  add_filter '/vendor/'
+  add_filter '/db/'
 end
 
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
