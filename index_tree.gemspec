@@ -25,5 +25,5 @@ The index nodes are created when the root element is saved.}
   spec.add_dependency "activerecord", ">= 3.0.0"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "rdoc"
-  spec.add_development_dependency "minitest", "~> 4.7.5"
+  spec.add_development_dependency "minitest"
 end
