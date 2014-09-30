@@ -9,7 +9,7 @@ The index nodes are created when the root element is saved and stored in the Ind
 
 Example:
 
-    class Equation < ActiveRecord::Bas
+    class Equation < ActiveRecord::Base
         acts_as_indexed_node :root => true do
             has_many :expressions
         end
@@ -18,7 +18,7 @@ Example:
     end
     
     
-    class Expression < ActiveRecord::Bas
+    class Expression < ActiveRecord::Base
         acts_as_indexed_node do
             has_many :expressions
         end
