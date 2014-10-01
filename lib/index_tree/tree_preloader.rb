@@ -1,5 +1,7 @@
 module IndexTree
   module TreePreloader
+    # Reads the loading instruction from the tree structures and load the entities
+    # @param [root_entities] entities to load
     def self.preload_entities(root_entities)
 
       root_entities_array = Array(root_entities)
