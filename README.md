@@ -1,5 +1,5 @@
 [![Build Status](https://secure.travis-ci.org//Natural-Intelligence/index_tree.svg?branch=master)](https://travis-ci.org/Natural-Intelligence/index\_tree)
-[![Coverage Status](https://coveralls.io/repos/AlexStanovsky/index_tree/badge.png)](https://coveralls.io/r/AlexStanovsky/index_tree)
+[![Coverage Status](https://coveralls.io/repos/AlexStanovsky/index_tree/badge.png?branch=master)](https://coveralls.io/r/AlexStanovsky/index_tree?branch=master)
 # IndexTree
 
 This Gem eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N, 
