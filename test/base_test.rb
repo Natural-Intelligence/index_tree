@@ -4,14 +4,6 @@ require 'active_record'
 require 'rails'
 require 'index_tree'
 
-require 'simplecov'
-require 'coveralls'
-SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-SimpleCov.start do
-  add_filter '/test/'
-  add_filter '/db/'
-end
-
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
 
 class MiniTest::Unit::TestCase
@@ -55,10 +47,10 @@ def setup_db
 
 
     create_table :equations do |t|
-      t.references :expression
     end
 
     create_table :expressions do |t|
+      t.references :equation
       t.references :expression
     end
 

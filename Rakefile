@@ -3,6 +3,19 @@ require "bundler/gem_tasks"
 desc "Run unit tests."
 task :test do
   $: << "test"
+
+  require 'simplecov'
+  require 'coveralls'
+
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+      SimpleCov::Formatter::HTMLFormatter,
+      Coveralls::SimpleCov::Formatter
+  ]
+  SimpleCov.start do
+    add_filter 'test/'
+    add_filter 'db/'
+  end
+
   Dir["test/*_test.rb"].each { |f| require f[5..-4] }
 end
 

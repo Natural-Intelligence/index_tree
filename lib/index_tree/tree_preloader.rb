@@ -29,9 +29,9 @@ module IndexTree
     def self.preload_class(cache, root_entity_class, class_to_load)
       unless cache.has_key?(class_to_load)
         cache[class_to_load] = Hash[class_to_load.joins(:index_tree_index_node)
-                                                  .where(:index_tree_index_nodes => {:root_element_type => root_entity_class,
-                                                                                    :root_element_id => cache[root_entity_class].keys})
-                                                  .load.map { |entity| [entity.id, entity] }]
+                                    .where(:index_tree_index_nodes => {:root_element_type => root_entity_class,
+                                                                       :root_element_id => cache[root_entity_class].keys})
+                                    .load.map { |entity| [entity.id, entity] }]
       end
     end
 
@@ -43,8 +43,10 @@ module IndexTree
         end
 
         parent_id = source_entity.send(association_name.to_s + '_id')
-        source_entity.association(association_name).target = cache[target_class][parent_id]
-        source_entity.association(association_name).loaded!
+        if (parent_id)
+          source_entity.association(association_name).target = cache[target_class][parent_id]
+          source_entity.association(association_name).loaded!
+        end
       end
     end
 
