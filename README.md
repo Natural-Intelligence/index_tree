@@ -9,46 +9,89 @@ Each inner object in the tree have an index node instance that is connecting it 
 When the root of the tree is loaded, only the objects that are in the tree are fetched(Pruning).
 The index nodes are created when the root element is saved and stored in the IndexNode model.
 
-Example:
-
+## Example:
+### Models definitions:
     class Equation < ActiveRecord::Base
         acts_as_indexed_node :root => true do
             has_many :expressions
         end
       
         has_one :not_tree_association_a
+        
+        def traverse
+           expression.traverse
+        end        
     end
     
     
     class Expression < ActiveRecord::Base
+        belongs_to :equation, inverse_of: :expressions
+        
         acts_as_indexed_node do
             has_many :expressions
         end
         
         has_one :not_tree_association_b
-    end
         
-                     +----------+                                         +----------+
-                     |Equation 1|                                         |Equation 2|
-                     +-+------+-+                                         +-+------+-+
-                       |      |                                             |      |
-               +-------+      +-------+                             +-------+      +-------+
-               |                      |                             |                      |
-               v                      v                             v                      v
-         +-----------+          +-----------+                 +-----------+          +-----------+
-         |Expression1|          |Expression2|                 |Expression5|          |Expression6|
-         +-----------+          +-+-------+-+                 +-----------+          +-+-------+-+
-                                  |       |                                            |       |
-                          +-------+       +-------+                            +-------+       +-------+
-                          |                       |                            |                       |
-                          v                       v                            v                       v
-                    +-----------+           +-----------+                +-----------+           +-----------+
-                    |Expression3|           |Expression4|                |Expression7|           |Expression8|
-                    +-----------+           +-----------+                +-----------+           +-----------+
+        def traverse
+            expressions.map(&:traverse)
+        end
+    end
     
-The following statement fetches only the objects in the Equation1 tree in two queries:    
-      
-    Equation.find(1).preload_tree
+### Database initialization: 
+        
+                     +-----------+                               +-----------+
+                     |Equation  1|                               |Equation  2|
+                     +-----+-----+                               +-----+-----+
+                           |                                           |
+                           v                                           v
+                     +-----------+                               +-----------+
+                     |Expression1|                               |Expression6|
+                     +-+-------+-+                               +-+-------+-+
+                       ^       ^                                   ^       ^
+                       |       |                                   |       |
+               +-------+       +-------+                   +-------+       +-------+
+               |                       |                   |                       |
+               |                       |                   |                       |
+         +-----+-----+           +-----+-----+       +-----+-----+           +-----+-----+
+         |Expression3|           |Expression2|       |Expression8|           |Expression7|
+         +-----------+           +-----------+       +-----------+           +-----------+
+                                   ^       ^                                   ^       ^
+                                   |       |                                   |       |
+                           +-------+       +-------+                   +-------+       +-------+
+                           |                       |                   |                       |
+                           |                       |                   |                       |
+                     +-----+-----+           +-----+-----+       +-----+-----+          +------+-----+
+                     |Expression4|           |Expression5|       |Expression9|          |Expression10|
+                     +-----------+           +-----------+       +-----------+          +------------+                       
+    
+### Traversal example without tree pre-loading:
+   
+    Equation.find(1).traverse
+    
+Those are the queries that is executed:
+
+    Equation Load (0.2ms)  SELECT  "equations".* FROM "equations"   ORDER BY "equations"."id" ASC LIMIT 1
+    Expression Load (0.2ms)  SELECT  "expressions".* FROM "expressions"  WHERE "expressions"."id" = ? LIMIT 1  [["id", 1]]
+    Expression Load (0.1ms)  SELECT "expressions".* FROM "expressions"  WHERE "expressions"."expression_id" = ?  [["expression_id", 1]]
+    Expression Load (0.1ms)  SELECT "expressions".* FROM "expressions"  WHERE "expressions"."expression_id" = ?  [["expression_id", 2]]
+    Expression Load (0.1ms)  SELECT "expressions".* FROM "expressions"  WHERE "expressions"."expression_id" = ?  [["expression_id", 4]]
+    Expression Load (0.1ms)  SELECT "expressions".* FROM "expressions"  WHERE "expressions"."expression_id" = ?  [["expression_id", 5]]
+    Expression Load (0.1ms)  SELECT "expressions".* FROM "expressions"  WHERE "expressions"."expression_id" = ?  [["expression_id", 3]]
+
+It can be improved with eager loading such as 'includes', but eager loading will be fixed to the tree height.
+
+### Traversal example with tree pre-loading:
+            
+    Equation.find(1).preload_tree.traverse
+
+The statement fetches only the objects in the Equation1 tree in two queries:    
+       
+    Equation Load (0.1ms)  SELECT  "equations".* FROM "equations"   ORDER BY "equations"."id" ASC LIMIT 1
+    Expression Load (0.2ms)  SELECT "expressions".* FROM "expressions" 
+    INNER JOIN "index_tree_index_nodes" ON "index_tree_index_nodes"."node_element_id" = "expressions"."id" 
+    AND "index_tree_index_nodes"."node_element_type" = 'Expression' 
+    WHERE "index_tree_index_nodes"."root_element_type" = 'Equation' AND "index_tree_index_nodes"."root_element_id" IN (1)
     
 One query to fetch Equations, and the second query is to fetch Expressions(Doesn't matter how deep is the tree it is still one query)
     

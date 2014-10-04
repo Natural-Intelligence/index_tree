@@ -46,7 +46,6 @@ end
 class PolymorphicTreeTest < MiniTest::Unit::TestCase
 
   def setup
-    # teardown_db
     setup_db
 
     value1 = Value.create!()
@@ -73,16 +72,5 @@ class PolymorphicTreeTest < MiniTest::Unit::TestCase
 
   def test_preload_tree
     preload_tree(PolyEquation,12)
-    # not_load_equation = PolyEquation.first
-    #
-    # assert_queries(12) do
-    #   not_load_equation.traverse
-    # end
-    #
-    # load_equation = PolyEquation.first.preload_tree
-    #
-    # assert_no_queries do
-    #   load_equation.traverse
-    # end
   end
 end

@@ -87,15 +87,17 @@ def teardown_db
   end
 end
 
-def preload_tree(class_to_test,num_of_queries)
-  not_load = class_to_test.first
+def preload_tree(classes_to_test, num_of_queries)
+  not_loaded = []
+  not_loaded = Array(classes_to_test).each.map(&:first)
   assert_queries(num_of_queries) do
-    not_load.traverse
+    not_loaded.each.map(&:traverse)
   end
 
-  loaded = class_to_test.first.preload_tree
+  loaded = []
+  loaded = Array(classes_to_test).each.map(&:first).map(&:preload_tree)
   assert_no_queries do
-    loaded.traverse
+    loaded.each.map(&:traverse)
   end
 end
 

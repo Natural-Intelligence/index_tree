@@ -1,14 +1,14 @@
 module IndexTree
   module TreePreloader
-    # Reads the loading instruction from the tree structures and load the entities
+    # Reads the loading instruction from the tree structures and loads the entities
     # @param [root_entities] entities to load
     def self.preload_entities(root_entities)
 
       root_entities_array = Array(root_entities)
       root_entity_class = root_entities_array.first.class
 
-      cache = {root_entity_class =>
-                   Hash[root_entities_array.map { |t| [t.id, t] }]}
+      cache = {}
+      add_to_cache(cache, root_entity_class, root_entities_array)
 
       tree_structure = root_entity_class.tree_structure
 
@@ -28,12 +28,25 @@ module IndexTree
       return root_entities
     end
 
+    # Adds new entity to cache
+    # @param [cache] reference to the cache
+    # @param [class_to_load] class entity will be the key of the entity list
+    # @param [entities_array] array of entities
+    def self.add_to_cache(cache, class_to_load, entities_array)
+      cache[class_to_load] = Hash[entities_array.map { |entity| [entity.id, entity] }]
+    end
+
+    # Preload the entity into the cache
+    # @param [cache] reference to the cache
+    # @param [root_entity_class] class of the root entity
+    # @param [class_to_load] array of entities
     def self.preload_class(cache, root_entity_class, class_to_load)
       unless cache.has_key?(class_to_load)
-        cache[class_to_load] = Hash[class_to_load.joins(:index_tree_index_node)
-                                    .where(:index_tree_index_nodes => {:root_element_type => root_entity_class,
-                                                                       :root_element_id => cache[root_entity_class].keys})
-                                    .load.map { |entity| [entity.id, entity] }]
+        loaded_entities = class_to_load.joins(:index_tree_index_node).
+            where(:index_tree_index_nodes => {:root_element_type => root_entity_class,
+                                              :root_element_id => cache[root_entity_class].keys}).load
+
+        add_to_cache(cache, class_to_load, loaded_entities)
       end
     end
 
