@@ -10,11 +10,11 @@ Gem::Specification.new do |spec|
   spec.email = %w(info@naturalint.com)
   spec.homepage = 'http://www.naturalint.com'
 
-  spec.summary = %q{Eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N,
-when N is number of different models(ActiveRecords) in the tree}
+  spec.summary = %q{eagerly loads trees by indexing the nodes of the tree. The number of queries needed for loading a tree is N,
+Where N is the number of different models(ActiveRecords) in the tree}
 
-  spec.description= %q{This Gem eager loads trees by indexing the nodes of the tree. The number of queries needed to load a tree is N,
-when N is number of different models(ActiveRecords) in the tree.
+  spec.description= %q{This Gem eagerly loads trees by indexing the nodes of the tree. The number of queries needed for loading a tree is N,
+Where N is the number of different models(ActiveRecords) in the tree.
 Each inner object in the tree have an index node instance that is connecting it to the root.
 When the root of the tree is loaded, only the objects that are in the tree are fetched(Pruning).
 The index nodes are created when the root element is saved and stored in the IndexNode model.}
