@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/benchmark'
+require 'minitest/ci'
 require 'active_record'
 require 'rails'
 require 'index_tree'

@@ -27,6 +27,7 @@ module ActiveRecord
   class Relation
     def preload_tree
       load unless loaded?
+      return @records if @records.blank?
       return IndexTree::TreePreloader.preload_entities(@records)
     end
   end
