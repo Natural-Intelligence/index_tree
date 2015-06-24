@@ -1,9 +1,3 @@
-require 'minitest/autorun'
-require 'minitest/benchmark'
-require 'minitest/ci'
-require 'active_record'
-require 'rails'
-require 'index_tree'
 
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
 

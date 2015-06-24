@@ -4,6 +4,7 @@ gemspec
 
 group :test do
   gem 'rails'
-  gem 'minitest-ci'
+  gem 'minitest-reporters'
+  gem 'simplecov-rcov'
   gem 'coveralls', require: false
 end
