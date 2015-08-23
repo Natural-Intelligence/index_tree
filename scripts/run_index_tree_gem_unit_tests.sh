@@ -2,13 +2,15 @@
 
 #get path param
 path=$1
+echo path: $path
 
-#select ruby version
+run_unit_tests(){
+  bundle install
+  bundle exec rake test
+}
+
+### main ###
+cd $path
 source /usr/local/rvm/scripts/rvm
 rvm use 2.1.2
-
-cd $path
-
-#run unit tests
-bundle install
-bundle exec rake test
+run_unit_tests
